@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+
+<div class="pt-2" style="">
+
+{% if app.user.id == article.userCreated.id %}
+   <div > <a class=" btn btn-outline-info" href="{{ path('article_edit', {'slug': article.slug}) }}"> <i class="fas fa-edit"></i> edit</a>
+   </div>
+    {% endif %}
+
+    <div class="description">
+        {% if article.articleVu %}
+
+                <a class="btn  btn-app btn-sm bg-info butt">
+                    <span class="badge bg-danger">{{ article.articleVu.userVu | length }}</span>
+                    <i class="fas fa-eye"></i> Vu
+                </a>
+
+        {% endif %}
+        <a href="{{ path('article_show',{'slug':article.slug,'like':true}) }}" class="btn btn-app  bg-info">
+            <span class="badge bg-danger">{{ article.likeArticle.userLike is defined?  article.likeArticle.userLike | length: '' }}</span>
+            {% if article.likeArticle.userLike is defined %}
+            <i class="{{ article.likeArticle.userLike.contains(app.user) ? 'text-danger': '' }} fas fa-heart"></i>
+                {% else %}
+                <i class="fas fa-heart"></i>
+            {% endif %}
+            Likes
+        </a>
+        <a class="btn  btn-app btn-sm bg-info butt">
+            <span class="badge bg-danger">{{ article.commentaires | length }}</span>
+            <i class="fas fa-comment"></i> commentaire
+        </a>
+    </div>
+
+    <div class="post clearfix p-2 ">
+        <div class="user-block">
+            <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{ article.userCreated.photo ? asset(article.userCreated.photo) : '/avatar.png' }}" alt="User Image">
+            <span class="username">
+                          <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
+                          <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>
+                        </span>
+            <span class="description"> publier le {{ article.publishedAt | date('Y-m-d H:i:s')  }}</span>
+        </div>
+
+        <!-- /.user-block -->
+        <h3 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h3>
+        {% if article.image %}
+        <div class="row gx-4 gx-lg-5 align-items-center ">
+            <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="..."></div>
+        </div>
+        {% endif %}
+        <p>
+            {{ article.description }}
+        </p>
+        <div class="pl-4">
+            {% for content in article.contents %}
+                <h5 id="event-names">{{ content.titre }}</h5>
+                <p class="pl-2" >{{ content.content }}</p>
+                <br>
+            {% endfor %}
+        </div>
+
+    </div>
+    <form class="form-horizontal">
+        <div class="input-group input-group-sm mb-0">
+            <textarea type="text" name="comment" class="form-control form-control-sm" placeholder="Comments"></textarea>
+            <div class="input-group-append">
+                <button type="submit"  class="btn btn-info"><i class=""></i>Send</button>
+            </div>
+        </div>
+    </form>
+    <div>
+        {% for comment in comments %}
+            <div class="direct-chat-msg">
+                <div class="direct-chat-infos clearfix">
+						<span class="direct-chat-name float-left">
+							{{ comment.userComment.name }}
+						</span>
+                    <span class="direct-chat-timestamp float-right">{{ comment.commentedAt | date('h:i - j/m/Y') }}</span>
+                </div>
+                <!-- /.direct-chat-infos -->
+                <div>
+                    <img src="/uploads/images/users/profil{{comment.userComment.photo ? asset(comment.userComment.photo) : '/avatar.png' }}" width="40px" class="float-left img-circle img-bordered-sm" alt="Message User Image">
+
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                        {{comment.content}}
+                    </div>
+                </div>
+                <!-- /.direct-chat-text -->
+            </div>
+
+        {% endfor %}
+        {{ knp_pagination_render(comments,'article/_pagination.html.twig') }}
+    </div>
+</div>
+
+{% endblock %}

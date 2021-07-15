@@ -1,0 +1,91 @@
+{#{{ form_start(form) }}#}
+{#    {{ form_widget(form) }}#}
+{#    <button class="btn">{{ button_label|default('Save') }}</button>#}
+{#{{ form_end(form) }}#}
+<style>
+    .c img{
+        /*width: 500px;*/
+        max-width: 100%;
+        height: auto;
+    }
+    .input-group-text {
+        min-width: 100px;
+    }
+
+</style>
+<div class="pt-3 form ">
+    {{ form_start(form) }}
+    <div class="input-group ">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Categorie </span>
+        </div>
+        {{ form_widget(form.categorie,{'attr':{'required':'true'}}) }}
+    </div>
+    <div class="input-group ">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Titre </span>
+        </div>
+        {{ form_widget(form.titre) }}
+    </div>
+    <div class="form">
+        <label >
+            <span>Description : </span>
+        </label>
+        <br>
+        <div>
+        {{ form_widget(form.description) }}
+        </div>
+    </div>
+    {{ form_widget(form.statu) }}
+    <label>Add Image : </label>
+    <div class="c row gx-4 gx-lg-5 align-items-center ">
+        <div class="col-lg-5">
+    {{ form_widget(form.imageFile) }}
+        </div>
+
+    </div>
+    {% if article.contents %}
+        <div id="content">
+        <input type="hidden" id="num" value={{ article.contents | length -1 }}>
+            {% set num = 0 %}
+        {% for content in article.contents %}
+                <div>
+                    <label>chapitre {{ num }}  </label><span class=" badge badge-danger " ><i class="fas" ></i>del</span>
+                    <input type="hidden" required name="contents[{{ num }}][id]" value={{ content.id }}>
+                    <input type="text" required name="contents[{{ num }}][titre]" class="form-control" value="{{ content.titre }}" placeholder="sous titre">
+                    <textarea placeholder="Contenu" required name="contents[{{ num }}][content]" class="form-control" >{{ content.content }}</textarea>
+                </div>
+            {% set num= num+1 %}
+        {% endfor %}
+        </div>
+
+    {% else %}
+    <div id="content">
+        <input type="hidden" id="num" value=0>
+        <div>
+            <label>chapitre  </label>
+            <input type="text" required name="contents[0][titre]" class="form-control" placeholder="sous titre">
+            <textarea placeholder="Contenu" required name="contents[0][content]" class="form-control" ></textarea>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    <a class="btn btn-success" id = "addContent">ajouter un paragraphe</a>
+    <br>
+    <br>
+
+    <button class="btn btn-success"><i class="fas fa-upload"></i> {{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+</div>
+<script>
+    var num = $('#num').val();
+    $('#addContent').on('click',function () {
+        num++;
+        $('#content').append(' <div class="ctn" ><label>chapitre '+num+' </label>');
+        $('#content').append('<input type="text" required name="contents['+num+'][titre]" class="form-control" placeholder="sous titre">');
+        $('#content').append(' <textarea required placeholder="Contenu" name="contents['+num+'][content]" class="form-control" ></textarea>');
+        $('#content').append('</div>');
+    });
+
+</script>

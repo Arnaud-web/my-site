@@ -1,0 +1,171 @@
+<aside class="theme main-sidebar sidebar-dark-primary elevation-4" style="background-color: rgba(0,0,0,0.5)">
+    <!-- Brand Logo -->
+    <a style="background-color: rgba(0,0,0,0.3)" href="" class="brand-link">
+        <img src="../../dist/img/logo.png" alt=" Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span  class="brand-text font-weight-light">My Site</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div style="background-color: rgba(0,0,0,0.2)" class="sidebar ">
+        <!-- Sidebar user (optional) -->
+        <div style="background-color: rgba(0,0,0,0.3)" class="user-panel mt-2  d-flex">
+            <div class="image">
+                <img src="/uploads/images/users/profil{{app.user.photo ? asset(app.user.photo) : '/avatar.png' }}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="{{ path('user_show',{'name':app.user.name}) }}" class="d-block">{{ app.user.name }}</a>
+            </div>
+        </div>
+
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="sidebar-search-results"><div class="list-group"><a href="#" class="list-group-item">
+                        <div class="search-title">
+                            <b class="text-light"></b>N<b class="text-light"></b>o<b class="text-light"></b> <b class="text-light"></b>e<b class="text-light"></b>l<b class="text-light"></b>e<b class="text-light"></b>m<b class="text-light"></b>e<b class="text-light"></b>n<b class="text-light"></b>t<b class="text-light"></b> <b class="text-light"></b>f<b class="text-light"></b>o<b class="text-light"></b>u<b class="text-light"></b>n<b class="text-light"></b>d<b class="text-light"></b>!<b class="text-light"></b>
+                        </div>
+                        <div class="search-path">
+
+                        </div>
+                    </a></div></div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul style="background-color: rgba(0,0,0,0.3)" class=" nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+
+                <li class="nav-item">
+                    <a style="background-color: rgba(0,0,0,0.2)" href="{{ path('home') }}" class="nav-link {{ home is defined? 'active' : ''}} ">
+                        {#                        <i class="nav-icon fas fa-log"></i>#}
+                        <i class=" nav-icon fas fa-home"></i>
+                        <p>
+                            Home
+                            {#                            <span class="right badge badge-danger">New</span>#}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+{#                    <a href="{{ path('all_message_index') }}" class="nav-link {{ creepub is defined ? 'active': '' }}">#}
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-globe"></i>
+                            <p>
+                                Publications
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                    </a>
+                    <ul class="nav  nav-treeview">
+                        <li class="nav-item">
+                            <a  href="{{ path('article_new') }}" class="nav-link {{ article_new is defined ? 'active': '' }}">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p>
+                                    créer un publication
+{#                                    <span class="right badge badge-danger">New</span>#}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a  href="{{ path('article_index') }}" class="nav-link {{ article_index is defined ? 'active': '' }}">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    Publication
+{#                                    <span class="right badge badge-danger">New</span>#}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a  href="{{ path('my_article_index') }}" class="nav-link {{ my_article_index is defined ? 'active': '' }}">
+                                <i class="nav-icon fas fa-file-invoice"></i>
+                                <p>
+                                    My Publication
+{#                                    <span class="right badge badge-danger">New</span>#}
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-address-book"></i>
+                        <p>
+                            Amis
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav  nav-treeview">
+                        <li class="nav-item">
+                            <a  href="{{ path('user_index') }}" class="nav-link {{ amis is defined ? 'active': '' }}">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Trouver des amis
+                                    <span class="right badge badge-danger">New</span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('suivie_index') }}" class="nav-link {{ suivies is defined ? 'active': '' }}">
+                                <i class="text-blue nav-icon fas fa-users"></i>
+                                <p>
+                                    suivies
+                                    <span class="right badge badge-info">{{ app.user.frinds | length }}</span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('abonnee_index') }}" class="nav-link {{ abonnee is defined ? 'active': '' }}">
+                                <i class="text-red nav-icon fas fa-users"></i>
+                                <p>
+                                    Abonnees
+                                    <span class="right badge badge-info">{{ app.user.MyFrind | length }}</span>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('all_message_index') }}" class="nav-link {{ msg is defined ? 'active': '' }}">
+                        <i class="nav-icon fas fa-envelope"></i>
+                        <p>
+                            Messages
+                            <span class="right badge badge-danger ">{{ app.user.allNewMessage(app.user.id)['messages'] | length }}</span>
+{#                            <span class="right badge badge-danger">New</span>#}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_logout') }}" class="nav-link">
+{#                        <i class="nav-icon fas fa-log"></i>#}
+                        <i class=" nav-icon fas fa-sign-out-alt"></i>
+                        <p>
+                           logout
+{#                            <span class="right badge badge-danger">New</span>#}
+                        </p>
+                    </a>
+                </li>
+                {#                <li class="nav-item">#}
+{#                    <a href="{{ path('user_index') }}" class="nav-link">#}
+{#                        <i class="nav-icon fas fa-users"></i>#}
+{#                        <p>#}
+{#                            Trouver des amis#}
+{#                            <span class="right badge badge-danger">New</span>#}
+{#                        </p>#}
+{#                    </a>#}
+{#                </li>#}
+
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

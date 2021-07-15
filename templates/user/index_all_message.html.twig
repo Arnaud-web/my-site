@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Trouver des amis{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+{% endblock %}
+{% block javascripts %}
+    <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="../../plugins/jszip/jszip.min.js"></script>
+    <script src="../../plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="../../plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "paging": false,
+                // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+{% endblock %}
+{% block body %}
+    <h5>{{ titre? titre : 'Trouver des amis'}}  </h5>
+
+{#    <table class="table" id="example1">#}
+{#        <thead>#}
+{#            <tr>#}
+{#                <th></th>#}
+{#                <th>Name</th>#}
+{#                <th>Message</th>#}
+{#                <th>Date</th>#}
+{#                <th>Seen</th>#}
+{#                <th><span class="float-right ">actions</span></th>#}
+{#            </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+        <div class="active "   id="activity">
+            <table>
+            {% for message in messages %}
+                <!-- Post -->
+{#                <a href="{{ path('message_new', {'name': message.userSend.name}) }}">#}
+                <tr class="">
+
+
+                <td class=" post clearfix p-1 m-0" style="background-color : {{ message.sender(app.user)? 'rgba(255,255,255,0.2)':'rgba(255,255,255,0.5)'}}" >
+
+                    <p class="user-block ">
+                        <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{message.userSend.photo ? asset(message.userSend.photo) : '/avatar.png' }}" alt="User Image">
+                        <span class="description"><i class="fas fa-clock"></i>  {{ message.sendAt | date('Y-m-d H:i:s')   }}</span>
+
+                        <span class="username">
+                          <a href="{{ path('user_show', {'name': message.userSend.name}) }}">{{ message.userSend.name }}</a>
+{#                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>#}
+                        </span>
+                        {% if message.getMessageVu(message.userReceved.id) %}
+                            <span class="description">{{ message.sender(app.user)? 'Receved : ': ''}} {{ message.sender(app.user)?   message.getMessageVu(message.userReceved.id).vuAt |date('Y-m-d H:i:s') : '' }}</span>
+                        {% endif %}
+                    </p>
+                    <!-- /.user-block -->
+                    <p>
+                        <a href="{{ path('message_new', {'name': message.userSend.name}) }}" ><span class=" pl-4" > {{ message.message }} </span></a>
+                        {% if message.image %}
+                            <br>
+                            <a href="{{vich_uploader_asset(message) }}" ><img class="w-25" src=" {{vich_uploader_asset(message) }}"></a>
+                        {% endif %}
+{#                        {{ dump(message.getMessageVu(message.userSend.id).vuAt) }}#}
+{#                        {{ dump(message) }}#}
+                        {%  if message.getMessageVu(app.user.id).vuAt  is defined  %}
+                            <span class="description float-right font-weight-light text-sm text-sm "> 'Seen at  {{   message.getMessageVu(message.userReceved.id).vuAt |date('Y-m-d H:i:s') }}</span>
+                            {% else %}
+                                <span class=" float-right p-2 badge badge-success badge-sm ">  </span>
+                        {% endif %}
+                    </p>
+                </p>
+                </td>
+
+                </tr>
+
+
+
+            {% endfor %}
+            </table>
+
+        </div>
+        {{ knp_pagination_render(messages,'user/_pagination.html.twig') }}
+{#    <a href="{{ path('user_new') }}">Create new</a>#}
+{#        </tbody>#}
+{% endblock %}
