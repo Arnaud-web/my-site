@@ -102,6 +102,11 @@
                 "database_host": "DATABASE_HOST",
                 "database_port": "DATABASE_PORT"
             }
-        }
+        },
+		"paas": {
+      		"compile": [
+        		"php app/console assetic:dump --env=prod --no-debug"
+      		]
+    	}
     }
 }
