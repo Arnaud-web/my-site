@@ -40,11 +40,14 @@ class ArticleController extends AbstractController
 
             ]
         );
+        $categories = $this->getDoctrine()->getRepository(Categorie::class)->findAll();
+        $categorieActive = $this->getDoctrine()->getRepository(Categorie::class)->findOneBy(['id'=>$type]) ;
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
             'type'=>$type,
             'article_index'=>true,
-            'categories'=>$this->getDoctrine()->getRepository(Categorie::class)->findAll(),
+            'categories'=>$categories,
+            'categorieActive'=>$categorieActive,
         ]);
     }
     #[Route('/my_publications', name: 'my_article_index', methods: ['GET'])]
