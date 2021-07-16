@@ -4,13 +4,27 @@
 
 {% block body %}
 
-
     <div class="" style="">
-<div class="nav ">
-    {% for categorie in categories %}
-        <li class="nav-item p-2 m-auto"><a href="{{ path('article_index',{'id':categorie.id}) }}" class="btn btn-outline-dark" >{{ categorie.label }}</a></li>
-    {% endfor %}
-</div>
+
+        <nav class="navbar navbar-expand navbar-white">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Filtre</a>
+                    <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Type de publication
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% for categorie in categories %}
+                                <li class="p-2 {{ type == categorie.id ? 'bg-blue':'' }}"><a href="{{ path('article_index',{'id':categorie.id}) }}" class="nav-link " >{{ categorie.label }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
         {% for article in articles %}
 {#            {{ dump(article.publishedAt) }}#}
             {% if article.image %}

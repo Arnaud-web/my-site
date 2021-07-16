@@ -22,6 +22,7 @@ class ArticleController extends AbstractController
     #[Route('/', name: 'article_index', methods: ['GET'])]
     public function index(Request $request,PaginatorInterface $paginator,ArticleRepository $articleRepository): Response
     {
+        $type = $request->query->get('id');
         if($request->query->get('id')){
             $id = $request->query->get('id');
             $articles = $articleRepository->findBy(['statu'=>true,'categorie'=>$id],['publishedAt'=>'desc']);
@@ -41,6 +42,7 @@ class ArticleController extends AbstractController
         );
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
+            'type'=>$type,
             'article_index'=>true,
             'categories'=>$this->getDoctrine()->getRepository(Categorie::class)->findAll(),
         ]);
