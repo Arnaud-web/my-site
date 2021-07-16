@@ -40,11 +40,11 @@
                     <br>
             <div class=" mb-6">
 
-                <div class="row gx-4 gx-lg-5 align-items-center ">
-                    <div class="col-lg-5"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="..."></div>
-                    <div class="col-lg-7">
+                <div class="row gx-4 gx-lg-5 align-items-left ">
+                    <div class="col " style="display: contents"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="..."></div>
+                    <div class="col-lg">
                         <h5 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h5>
-                        <p>{{ article.description }}</p>
+                        <p class="pl-1" >{{ article.description }}</p>
 {#                        <a class="btn btn-primary" href="#!">Call to Action!</a>#}
                     </div>
                 </div>
