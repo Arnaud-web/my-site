@@ -41,7 +41,7 @@
             <div class=" mb-6">
 
                 <div class="row gx-4 gx-lg-5 align-items-left ">
-                    <div class="col " style="display: contents"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="..."></div>
+                    <div class="col " style="display: contents"><img style="max-width: 500px" class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="..."></div>
                     <div class="col-lg">
                         <h5 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h5>
                         <p class="pl-1" >{{ article.description }}</p>
