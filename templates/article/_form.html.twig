@@ -50,7 +50,7 @@
             {% set num = 0 %}
         {% for content in article.contents %}
                 <div>
-                    <label>chapitre {{ num }}  </label><span class=" badge badge-danger " ><i class="fas" ></i>del</span>
+                    <label>chapitre {{ num }}  </label>
                     <input type="hidden" required name="contents[{{ num }}][id]" value={{ content.id }}>
                     <input type="text" required name="contents[{{ num }}][titre]" class="form-control" value="{{ content.titre }}" placeholder="sous titre">
                     <textarea placeholder="Contenu" required name="contents[{{ num }}][content]" class="form-control" >{{ content.content }}</textarea>
