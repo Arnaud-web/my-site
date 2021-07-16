@@ -10,13 +10,13 @@ vich_uploader:
             delete_on_update: true
         message_image_profil:
             uri_prefix: /upload/images/users/message
-            upload_destination: '%kernel.project_dir%/public/uploads/images/users/message'
+            upload_destination: '%kernel.project_dir%/public/upload/images/users/message'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             delete_on_remove: true
             delete_on_update: true
         user_image_article:
             uri_prefix: /upload/images/users/article
-            upload_destination: '%kernel.project_dir%/public/uploads/images/users/article'
+            upload_destination: '%kernel.project_dir%/public/upload/images/users/article'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             delete_on_remove: true
             delete_on_update: true
