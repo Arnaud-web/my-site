@@ -10,7 +10,7 @@
         <!-- Sidebar user (optional) -->
         <div style="background-color: rgba(0,0,0,0.3)" class="user-panel mt-2  d-flex">
             <div class="image">
-                <img src="/uploads/images/users/profil{{app.user.photo ? asset(app.user.photo) : '/avatar.png' }}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{ app.user.photo }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="{{ path('user_show',{'name':app.user.name}) }}" class="d-block">{{ app.user.name }}</a>

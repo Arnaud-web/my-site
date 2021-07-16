@@ -64,7 +64,7 @@
                 <td class=" post clearfix p-1 m-0" style="background-color : {{ message.sender(app.user)? 'rgba(255,255,255,0.2)':'rgba(255,255,255,0.5)'}}" >
 
                     <p class="user-block ">
-                        <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{message.userSend.photo ? asset(message.userSend.photo) : '/avatar.png' }}" alt="User Image">
+                        <img class="img-circle img-bordered-sm" src="{{message.userSend.photo }}" alt="User Image">
                         <span class="description"><i class="fas fa-clock"></i>  {{ message.sendAt | date('Y-m-d H:i:s')   }}</span>
 
                         <span class="username">

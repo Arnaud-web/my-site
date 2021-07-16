@@ -330,7 +330,12 @@ class User implements UserInterface
 
     public function getPhoto(): ?string
     {
-        return $this->photo;
+        if($this->photo) {
+            return '/upload/images/users/profil/' . $this->photo;
+        }
+        else{
+            return '/uploads/images/users/profil/avatar.png';
+        }
     }
 
     public function setPhoto(?string $photo): self

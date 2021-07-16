@@ -55,7 +55,7 @@
 
             <tr>
                 <td style="width: 20px">
-                    <img class="profile-user-img img-size-50  " src="/uploads/images/users/profil{{user.photo ? asset(user.photo) : '/avatar.png' }}" alt="User profile picture"></td>
+                    <img class="profile-user-img img-size-50  " src="{{user.photo}}" alt="User profile picture"></td>
                 <td class="col-2">{{ user.name }}</td>
                 <td class="col-2">{{ user.email }}</td>
                 <td >

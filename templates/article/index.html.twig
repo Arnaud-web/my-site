@@ -30,7 +30,7 @@
             {% if article.image %}
                 <div>
                     <div class="user-block" style="display:contents">
-                        <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{ article.userCreated.photo ? asset(article.userCreated.photo) : '/avatar.png' }}" alt="User Image">
+                        <img class="img-circle img-bordered-sm" src="{{ article.userCreated.photo }}" alt="User Image">
                         <span class="username">
                           <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
                           <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>
@@ -61,7 +61,7 @@
             {% else %}
             <div class="post clearfix p-2">
                 <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{ article.userCreated.photo ? asset(article.userCreated.photo) : '/avatar.png' }}" alt="User Image">
+                    <img class="img-circle img-bordered-sm" src="{{ article.userCreated.photo }}" alt="User Image">
                     <span class="username">
                           <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
                           <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>

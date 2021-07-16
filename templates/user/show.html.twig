@@ -11,7 +11,7 @@
     <div class="card-body box-profile">
 
         <div class="text-center">
-            <img class="profile-user-img img-fluid img-circle" src="/uploads/images/users/profil{{user.photo ? asset(user.photo) : '/avatar.png' }}" alt="User profile picture">
+            <img class="profile-user-img img-fluid img-circle" src="{{user.photo }}" alt="User profile picture">
         </div>
         {% if app.user.id == user.id %}
         <div class=" text-center"><a class="btn btn-outline-light text-gray" style="font-size: 12px" href="{{ path('user_photo_new') }}" > <i class="fas fa-edit"></i> Change photo</a></div>
