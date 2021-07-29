@@ -326,6 +326,12 @@ class Article
         return $this->contents;
     }
 
+    public function delContents(){
+       foreach ($this->contents as $test){
+           $test->setArticle(null);
+       }
+    }
+
     public function addContent(Content $content): self
     {
         if (!$this->contents->contains($content)) {

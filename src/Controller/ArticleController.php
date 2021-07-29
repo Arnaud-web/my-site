@@ -204,17 +204,17 @@ class ArticleController extends AbstractController
                 $article->setPublishedAt(new \DateTime());
             }
             $contents = $request->request->get('contents');
-            $repoContent = $this->getDoctrine()->getRepository(Content::class);
+             $repoContent = $this->getDoctrine()->getRepository(Content::class);
 //            dd($contents);
+            $contentArticles = $repoContent->findBy(['article'=>$article->getId()]);
             if($contents){
+                $article->delContents();
                 foreach ($contents as $content){
-                    if(isset($content['id'])){
-                        $articleContent =  $repoContent->findOneBy(['id'=>$content['id']]);
-                    }else{
+
                         $articleContent = new Content();
                         $articleContent->setArticle($article);
 //                        dd("ok");
-                    }
+
                     $articleContent->setTitre($content['titre']);
                     $articleContent->setContent($content['content']);
                     $this->getDoctrine()->getManager()->persist($articleContent);

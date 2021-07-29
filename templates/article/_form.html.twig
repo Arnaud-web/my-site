@@ -49,8 +49,8 @@
         <input type="hidden" id="num" value={{ article.contents | length -1 }}>
             {% set num = 0 %}
         {% for content in article.contents %}
-                <div>
-                    <label>chapitre {{ num }}  </label>
+                <div class="ctn p-2 m-1 " style="border: 1px solid grey">
+                    <label>chapitre {{ num }}  </label> <a class="btn btn-sm float-right btn-danger del" id = "del">del</a>
                     <input type="hidden" required name="contents[{{ num }}][id]" value={{ content.id }}>
                     <input type="text" required name="contents[{{ num }}][titre]" class="form-control" value="{{ content.titre }}" placeholder="sous titre">
                     <textarea placeholder="Contenu" required name="contents[{{ num }}][content]" class="form-control" >{{ content.content }}</textarea>
@@ -79,13 +79,23 @@
 
 </div>
 <script>
-    var num = $('#num').val();
+
+    function del () {
+       $('.del').on('click',function () {
+           var  a  = $(this).parent().remove();
+        console.log(a);
+       });
+    }
+    let num = $('#num').val();
+
     $('#addContent').on('click',function () {
         num++;
-        $('#content').append(' <div class="ctn" ><label>chapitre '+num+' </label>');
-        $('#content').append('<input type="text" required name="contents['+num+'][titre]" class="form-control" placeholder="sous titre">');
-        $('#content').append(' <textarea required placeholder="Contenu" name="contents['+num+'][content]" class="form-control" ></textarea>');
-        $('#content').append('</div>');
-    });
 
+        $('#content').append(' <div class="ctn p-2 m-1 " style="border: 1px solid grey" ><label>chapitre '+num+' </label><a class="btn btn-sm float-right btn-danger del" id = "del">del</a>'
+        +'<input type="text" required name="contents['+num+'][titre]" class="form-control" placeholder="sous titre">'
+        +' <textarea required placeholder="Contenu" name="contents['+num+'][content]" class="form-control" ></textarea>'
+        +'</div>');
+        del();
+    });
+    del();
 </script>
