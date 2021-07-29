@@ -3,6 +3,9 @@
 {% block title %}Article index{% endblock %}
 
 {% block body %}
+    <div class="row">
+        <div class="col-9 m-auto"  style="">
+
 
     <div class="" style="">
 
@@ -40,13 +43,13 @@
                     <br>
             <div class=" mb-6">
 
-                <div class="row gx-4  align-items-left ">
-                    <p class="col-sm-5 " style="display: block">
+                <div class=" gx-4  align-items-left ">
+                    <p class="col " style="display: block">
                         <img style="" class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="...">
                     </p>
-                    <div class="col-sm-7">
+                    <div class="col">
                         <h5 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h5>
-                        <p class="pl-1" >{{ article.description }}</p>
+                        <p class="pl-1 textjustify" >{{ article.description }}</p>
 {#                        <a class="btn btn-primary" href="#!">Call to Action!</a>#}
                     </div>
                 </div>
@@ -72,7 +75,7 @@
                 </div>
                 <!-- /.user-block -->
                 <h5 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h5>
-                <p>
+                <p class="textjustify">
             {{ article.description }}
                 </p>
                 {% include('article/_foot_article_html.twig') %}
@@ -89,6 +92,25 @@
     {{ knp_pagination_render(articles,'article/index_pagination.html.twig') }}
 </div>
     </div>
+        </div>
 
+        <div class=" col  m-auto" style="min-width: 150px;margin-top: 3px!important;">
+            <h4>Publicites : </h4>
+<div class="" >
+            {% for publicite in publicites %}
+
+                <div class="mb-1 pb-1 p-1" style="min-width: 150px;background-color: rgba(0,0,0,0.2)">
+                    <span>{{ publicite.titre }}</span><br>
+                    <span>{{ publicite.description }}</span>
+                    <a href="{{ path('article_show',{'slug': publicite.slug }) }}" class="btn-link">ici ..</a>
+                    {% if publicite.image %}
+                    <img style="" class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(publicite) }}" alt="...">
+                    {% endif %}
+                </div>
+
+            {% endfor %}
+        </div>
+        </div>
+    </div>
 {#    <a href="{{ path('article_new') }}">Create new</a>#}
 {% endblock %}

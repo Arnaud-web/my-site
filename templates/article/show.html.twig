@@ -52,13 +52,13 @@
             <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="..."></div>
         </div>
         {% endif %}
-        <p>
+        <p class="textjustify">
             {{ article.description }}
         </p>
         <div class="pl-4">
             {% for content in article.contents %}
                 <h5 id="event-names">{{ content.titre }}</h5>
-                <p class="pl-2" >{{ content.content }}</p>
+                <p class="pl-2 textjustify" >{{ content.content }}</p>
                 <br>
             {% endfor %}
         </div>

@@ -42,14 +42,18 @@ class ArticleController extends AbstractController
         );
         $categories = $this->getDoctrine()->getRepository(Categorie::class)->findAll();
         $categorieActive = $this->getDoctrine()->getRepository(Categorie::class)->findOneBy(['id'=>$type]) ;
+        $publicites = $articleRepository->findBy(['categorie'=>$this->getDoctrine()->getRepository(Categorie::class)->findOneBy(['label'=>'Publicité'])],['publishedAt'=>'desc'],5);
+
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
             'type'=>$type,
             'article_index'=>true,
             'categories'=>$categories,
+            'publicites'=>$publicites,
             'categorieActive'=>$categorieActive,
         ]);
     }
+
     #[Route('/my_publications', name: 'my_article_index', methods: ['GET'])]
     public function myIndex(ArticleRepository $articleRepository): Response
     {
@@ -110,7 +114,8 @@ class ArticleController extends AbstractController
             $entityManager->persist($articleLike);
             $entityManager->flush();
 
-            return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
+//            return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('article_show', ['slug'=>$article->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/new.html.twig', [
