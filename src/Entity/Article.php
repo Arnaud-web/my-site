@@ -98,10 +98,16 @@ class Article
      */
     private $contents;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PostEmploi::class, mappedBy="article")
+     */
+    private $postEmplois;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
         $this->contents = new ArrayCollection();
+        $this->postEmplois = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -348,6 +354,36 @@ class Article
             // set the owning side to null (unless already changed)
             if ($content->getArticle() === $this) {
                 $content->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PostEmploi[]
+     */
+    public function getPostEmplois(): Collection
+    {
+        return $this->postEmplois;
+    }
+
+    public function addPostEmploi(PostEmploi $postEmploi): self
+    {
+        if (!$this->postEmplois->contains($postEmploi)) {
+            $this->postEmplois[] = $postEmploi;
+            $postEmploi->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostEmploi(PostEmploi $postEmploi): self
+    {
+        if ($this->postEmplois->removeElement($postEmploi)) {
+            // set the owning side to null (unless already changed)
+            if ($postEmploi->getArticle() === $this) {
+                $postEmploi->setArticle(null);
             }
         }
 

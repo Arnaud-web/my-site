@@ -34,6 +34,11 @@ class Categorie
      */
     private $articles;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $idName;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -101,5 +106,17 @@ class Categorie
     {
         // TODO: Implement __toString() method.
         return $this->label;
+    }
+
+    public function getIdName(): ?string
+    {
+        return $this->idName;
+    }
+
+    public function setIdName(string $name): self
+    {
+        $this->idName = $name;
+
+        return $this;
     }
 }

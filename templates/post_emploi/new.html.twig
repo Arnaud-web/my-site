@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New PostEmploi{% endblock %}
+
+{% block body %}
+    <div class=" p-2">
+
+
+    <div class="user-block" style="display:contents">
+        <img class="img-circle img-bordered-sm" src="{{ article.userCreated.photo }}" alt="User Image">
+        <span class="username">
+                          <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
+                          <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>
+                        </span>
+        <span class="description"> publier le {{ article.publishedAt | date('Y-m-d H:i:s')  }}</span>
+    </div>
+
+    <h4>{{ article.titre }}</h4>
+    <p>{{ article.description }}</p>
+    <h1></h1>
+
+    {{ include('post_emploi/_form.html.twig',{button_label:'Envoyer',style:'btn-info'}) }}
+    </div>
+{#    <a href="{{ path('post_emploi_index') }}">back to list</a>#}
+{% endblock %}

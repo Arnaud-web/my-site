@@ -133,6 +133,13 @@ class User implements UserInterface
      */
     private $commentaires;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PostEmploi::class, mappedBy="userPost")
+     */
+    private $postEmplois;
+
+
+
     public function __construct()
     {
         $this->userPhotos = new ArrayCollection();
@@ -145,6 +152,8 @@ class User implements UserInterface
         $this->articleVus = new ArrayCollection();
         $this->likeArticles = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
+        $this->postEmplois = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -715,4 +724,36 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|PostEmploi[]
+     */
+    public function getPostEmplois(): Collection
+    {
+        return $this->postEmplois;
+    }
+
+    public function addPostEmploi(PostEmploi $postEmploi): self
+    {
+        if (!$this->postEmplois->contains($postEmploi)) {
+            $this->postEmplois[] = $postEmploi;
+            $postEmploi->setUserPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostEmploi(PostEmploi $postEmploi): self
+    {
+        if ($this->postEmplois->removeElement($postEmploi)) {
+            // set the owning side to null (unless already changed)
+            if ($postEmploi->getUserPost() === $this) {
+                $postEmploi->setUserPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

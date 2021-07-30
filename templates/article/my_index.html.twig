@@ -47,6 +47,7 @@
             <tr>
 
                 <th>Titre</th>
+                <th>categorie</th>
                 <th>Statu</th>
                 <th>created At</th>
                 <th><span class="float-right ">actions</span></th>
@@ -59,6 +60,9 @@
                 <td>
                     {{ article.titre }}
                 </td>
+                <td>
+                    {{ article.categorie.label }}
+                </td>
 
                 <td>
                     {{ article.statu? '<span class="badge badge-success" >publier</span>':'<span class="badge badge-danger" > non publier</span>' }}
@@ -69,6 +73,9 @@
                 </td>
             <td>
                 <a href="{{ path('article_show',{'slug': article.slug }) }}" class="btn btn-outline-info">voir </a>
+                {% if article.categorie.idName == "offre_emploi" %}
+                <a class=" btn btn-outline-info" href="{{ path('post_emploi_index', {'slug': article.slug}) }}"> <i class="fas fa-list"></i> Gerer</a>
+                {% endif %}
             </td>
             </tr>
         {% else %}

@@ -1,0 +1,238 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PostEmploi index{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+{% endblock %}
+{% block javascripts %}
+    <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    {#    <script src="../../plugins/jszip/jszip.min.js"></script>#}
+    {#    <script src="../../plugins/pdfmake/pdfmake.min.js"></script>#}
+    {#    <script src="../../plugins/pdfmake/vfs_fonts.js"></script>#}
+    <script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "pageLength": 5,
+                // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h4>{{ article.titre }}</h4>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-xl">
+       voir l'offre
+    </button>
+    <table class="table" id="example1">
+        <thead>
+            <tr>
+
+                <th>User</th>
+                <th>PostAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post_emploi in post_emplois %}
+            <tr>
+
+                <td>
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modal-xl-{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d-H-i-s') : '' }}-user">
+                        {{ post_emploi.userPost.name }} ({{ post_emploi.userPost.email}})
+                    </button>
+                     </td>
+                <td>{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+{#                    <a href="{{ path('post_emploi_show', {'id': post_emploi.id}) }}">show</a>#}
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-xl-{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d-H-i-s') : '' }}">
+                        voir lettre
+                    </button>
+{#                    <a href="{{ path('post_emploi_edit', {'id': post_emploi.id}) }}">edit</a>#}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{#    <a href="{{ path('post_emploi_new') }}">Create new</a>#}
+
+    <div class="modal fade" id="modal-xl" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ article.titre }}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="description">
+                        {% if app.user.id == article.userCreated.id %}
+                            <div >
+                                <a class=" btn btn-outline-info" href="{{ path('article_edit', {'slug': article.slug}) }}"> <i class="fas fa-edit"></i> edit</a>
+
+                            </div>
+                        {% endif %}
+
+                        {% if article.articleVu %}
+
+                            <a class="btn  btn-app btn-sm bg-info butt">
+                                <span class="badge bg-danger">{{ article.articleVu.userVu | length }}</span>
+                                <i class="fas fa-eye"></i> Vu
+                            </a>
+
+                        {% endif %}
+                        <a href="{{ path('article_show',{'slug':article.slug,'like':true}) }}" class="btn btn-app  bg-info">
+                            <span class="badge bg-danger">{{ article.likeArticle.userLike is defined?  article.likeArticle.userLike | length: '' }}</span>
+                            {% if article.likeArticle.userLike is defined %}
+                                <i class="{{ article.likeArticle.userLike.contains(app.user) ? 'text-danger': '' }} fas fa-heart"></i>
+                            {% else %}
+                                <i class="fas fa-heart"></i>
+                            {% endif %}
+                            Likes
+                        </a>
+                        <a class="btn  btn-app btn-sm bg-info butt">
+                            <span class="badge bg-danger">{{ article.commentaires | length }}</span>
+                            <i class="fas fa-comment"></i> commentaire
+                        </a>
+                    </div>
+
+                    <div class="post clearfix p-2 ">
+                        <div class="user-block">
+                            <img class="img-circle img-bordered-sm" src="{{ article.userCreated.photo }}" alt="User Image">
+                            <span class="username">
+                          <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
+                          <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>
+                        </span>
+                            <span class="description"> publier le {{ article.publishedAt | date('Y-m-d H:i:s')  }}</span>
+                        </div>
+
+                        <!-- /.user-block -->
+                        <h3 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h3>
+                        {% if article.image %}
+                            <div class="row gx-4 gx-lg-5 align-items-center ">
+                                <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="..."></div>
+                            </div>
+                        {% endif %}
+                        <p class="textjustify">
+                            {{ article.description }}
+                        </p>
+                        <div class="pl-4">
+                            {% for content in article.contents %}
+                                <h5 id="event-names">{{ content.titre }}</h5>
+                                <p class="pl-2 textjustify" >{{ content.content }}</p>
+                                <br>
+                            {% endfor %}
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    {% for post_emploi in post_emplois %}
+    <div class="modal fade" id="modal-xl-{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d-H-i-s') : '' }}" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="user-block">
+                        <img class="img-circle img-bordered-sm" src="{{ post_emploi.userPost.photo }}" alt="User Image">
+                        <span class="modal-title">{{ post_emploi.userPost.fullName }} ({{ post_emploi.userPost.name }})</span>
+
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <p>{{ post_emploi.lettre }}</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+{#                    <button type="button" class="btn btn-primary">Save changes</button>#}
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+        {% set user = post_emploi.userPost %}
+<div class="modal fade" id="modal-xl-{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d-H-i-s') : '' }}-user" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="user-block">
+                    <img class="w-25 h-auto img-bordered-sm" src="{{ post_emploi.userPost.photo }}" alt="User Image">
+                </div>
+            </div>
+        <p class="text-muted text-center">{{ user.job }}</p>
+        <ul class="list-group  mb-3 " style="background-color: rgba(0,0,0,0)">
+            {% if app.user.id == user.id %}
+                <p><a class="btn btn-outline-light text-gray float-right btn-tool text-dark" href="{{ path('user_edit', {'name': user.name}) }}"> <i class="fas fa-edit"></i> edit</a></p>
+            {% endif %}
+            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
+                <b>Name</b> <i class="float-right">{{ user.name }}</i>
+            </li><li class="list-group-item" style="background-color: rgba(0,0,0,0)">
+                <b>Full name</b> <i class="float-right">{{ user.fullName }}</i>
+            </li>
+            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
+                <b>Email</b> <i class="float-right">{{ user.email }}</i>
+            </li>
+            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
+                <b>Address</b> <i class="float-right">{{ user.adress }}</i>
+            </li>
+            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
+                <b>Contact</b> <i class="float-right">{{ user.tel }}</i>
+            </li>
+            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
+                <b>Date d'inscription </b> <i class="float-right">{{ user.createdAt|date('Y-m-d H:i:s')  }}</i>
+            </li>
+            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
+                <b>Abonnes </b> <i class="float-right">{{ user.MyFrind | length  }}</i>
+            </li>
+        </ul>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
+            </div>
+        </div>
+
+    </div>
+</div>
+    {% endfor %}
+
+{% endblock %}

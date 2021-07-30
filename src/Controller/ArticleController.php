@@ -42,7 +42,7 @@ class ArticleController extends AbstractController
         );
         $categories = $this->getDoctrine()->getRepository(Categorie::class)->findAll();
         $categorieActive = $this->getDoctrine()->getRepository(Categorie::class)->findOneBy(['id'=>$type]) ;
-        $publicites = $articleRepository->findBy(['categorie'=>$this->getDoctrine()->getRepository(Categorie::class)->findOneBy(['label'=>'Publicité'])],['publishedAt'=>'desc'],5);
+        $publicites = $articleRepository->findBy(['categorie'=>$this->getDoctrine()->getRepository(Categorie::class)->findOneBy(['idName'=>'publicite'])],['publishedAt'=>'desc'],5);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
