@@ -41,6 +41,11 @@ class PostEmploi
      */
     private $userPost;
 
+    /**
+     * @ORM\OneToOne(targetEntity=PostReponse::class, mappedBy="post", cascade={"persist", "remove"})
+     */
+    private $postReponse;
+
     public function __construct()
     {
 
@@ -97,6 +102,28 @@ class PostEmploi
     public function setUserPost(?User $userPost): self
     {
         $this->userPost = $userPost;
+
+        return $this;
+    }
+
+    public function getPostReponse(): ?PostReponse
+    {
+        return $this->postReponse;
+    }
+
+    public function setPostReponse(?PostReponse $postReponse): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($postReponse === null && $this->postReponse !== null) {
+            $this->postReponse->setPost(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($postReponse !== null && $postReponse->getPost() !== $this) {
+            $postReponse->setPost($this);
+        }
+
+        $this->postReponse = $postReponse;
 
         return $this;
     }

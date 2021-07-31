@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PostReponse{% endblock %}
+
+{% block body %}
+    <h1>PostReponse</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ post_reponse.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ post_reponse.createdAt ? post_reponse.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Reponse</th>
+                <td>{{ post_reponse.reponse }}</td>
+            </tr>
+            <tr>
+                <th>DateEntretien</th>
+                <td>{{ post_reponse.dateEntretien ? post_reponse.dateEntretien|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Statu</th>
+                <td>{{ post_reponse.statu }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('post_reponse_index') }}">back to list</a>
+
+    <a href="{{ path('post_reponse_edit', {'id': post_reponse.id}) }}">edit</a>
+
+    {{ include('post_reponse/_delete_form.html.twig') }}
+{% endblock %}

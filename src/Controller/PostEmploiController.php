@@ -24,6 +24,16 @@ class PostEmploiController extends AbstractController
             'article'=>$article,
         ]);
     }
+    #[Route('/', name: 'my_post_emploi_index', methods: ['GET'])]
+    public function my_index(PostEmploiRepository $postEmploiRepository): Response
+    {
+
+        $post = $postEmploiRepository->findBy(['userPost'=>$this->getUser()->getId()]);
+        return $this->render('post_emploi/my_index.html.twig', [
+            'post_emplois' => $post,
+            'my_post_emploi_index'=>true,
+        ]);
+    }
 
     #[Route('/{slug}/new', name: 'post_emploi_new', methods: ['GET', 'POST'])]
     public function new(Request $request,Article $article): Response

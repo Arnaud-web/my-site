@@ -40,17 +40,15 @@
 {% endblock %}
 
 {% block body %}
-    <h4>{{ article.titre }}</h4>
-    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-xl">
-       voir l'offre
-    </button>
+{#    <h4>{{ article.titre }}</h4>#}
+
     <table class="table" id="example1">
         <thead>
             <tr>
 
-                <th>User</th>
+                <th>Offre</th>
                 <th>Lettre</th>
-                <th>Entretien</th>
+                <th>Reponse</th>
                 <th>PostAt</th>
                 <th>actions</th>
             </tr>
@@ -60,8 +58,8 @@
             <tr>
 
                 <td>
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modal-xl-{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d-H-i-s') : '' }}-user">
-                        {{ post_emploi.userPost.name }} ({{ post_emploi.userPost.email}})
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modal-xl-{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d-H-i-s') : '' }}-offre">
+                        {{ post_emploi.article.titre }}
                     </button>
                      </td>
                 <td>
@@ -71,14 +69,17 @@
                     </button>
                     {#                    <a href="{{ path('post_emploi_edit', {'id': post_emploi.id}) }}">edit</a>#}
                 </td>
-                <td>{{  post_emploi.postReponse ? post_emploi.postReponse.dateEntretien | date('Y-m-d H:i:s') : ''  }}</td>
-                <td>{{ post_emploi.postAt ? (post_emploi.postAt|date('Y-m-d H:i:s')) : '' }}</td>
+                <td> {%  if post_emploi.postReponse %}
+                        <span class="badge badge-success" >ok</span>
+                        <button class="btn btn-link" data-toggle="modal" data-target="#modal-xl-{{ post_emploi.postReponse.id }}">reponse</button>
+                    {% else%} <span class="badge badge-info">en attente</span>  {% endif %}</td>
+                <td>{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
 {#                    <a href="{{ path('post_emploi_show', {'id': post_emploi.id}) }}">show</a>#}
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-xl-{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d-H-i-s') : '' }}">
                         voir lettre
                     </button>
-                    <a class="btn btn-default" href="{{ path('post_reponse_new', {'id': post_emploi.id}) }}">Reponse</a>
+{#                    <a href="{{ path('post_emploi_edit', {'id': post_emploi.id}) }}">edit</a>#}
                 </td>
             </tr>
         {% else %}
@@ -91,7 +92,10 @@
 
 {#    <a href="{{ path('post_emploi_new') }}">Create new</a>#}
 
-    <div class="modal fade" id="modal-xl" style="display: none;" aria-hidden="true">
+
+    {% for post_emploi in post_emplois %}
+        {% set article = post_emploi.article %}
+        <div class="modal fade" id="modal-xl-{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d-H-i-s') : '' }}-offre" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -172,6 +176,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+    {% endfor %}
 
     {% for post_emploi in post_emplois %}
     <div class="modal fade" id="modal-xl-{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d-H-i-s') : '' }}" style="display: none;" aria-hidden="true">
@@ -200,49 +205,32 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-        {% set user = post_emploi.userPost %}
-<div class="modal fade" id="modal-xl-{{ post_emploi.postAt ? post_emploi.postAt|date('Y-m-d-H-i-s') : '' }}-user" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="user-block">
-                    <img class="w-25 h-auto img-bordered-sm" src="{{ post_emploi.userPost.photo }}" alt="User Image">
-                </div>
-            </div>
-        <p class="text-muted text-center">{{ user.job }}</p>
-        <ul class="list-group  mb-3 " style="background-color: rgba(0,0,0,0)">
-            {% if app.user.id == user.id %}
-                <p><a class="btn btn-outline-light text-gray float-right btn-tool text-dark" href="{{ path('user_edit', {'name': user.name}) }}"> <i class="fas fa-edit"></i> edit</a></p>
-            {% endif %}
-            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
-                <b>Name</b> <i class="float-right">{{ user.name }}</i>
-            </li><li class="list-group-item" style="background-color: rgba(0,0,0,0)">
-                <b>Full name</b> <i class="float-right">{{ user.fullName }}</i>
-            </li>
-            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
-                <b>Email</b> <i class="float-right">{{ user.email }}</i>
-            </li>
-            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
-                <b>Address</b> <i class="float-right">{{ user.adress }}</i>
-            </li>
-            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
-                <b>Contact</b> <i class="float-right">{{ user.tel }}</i>
-            </li>
-            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
-                <b>Date d'inscription </b> <i class="float-right">{{ user.createdAt|date('Y-m-d H:i:s')  }}</i>
-            </li>
-            <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
-                <b>Abonnes </b> <i class="float-right">{{ user.MyFrind | length  }}</i>
-            </li>
-        </ul>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
-            </div>
-        </div>
 
-    </div>
-</div>
-    {% endfor %}
+        {% if post_emploi.postReponse %}
+        <div class="modal fade" id="modal-xl-{{ post_emploi.postReponse.id }}" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ post_emploi.article.titre }}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>ref : {{ post_emploi.postReponse.statu }}</p>
+                        <p>date de l'entretien : {{ post_emploi.postReponse.dateEntretien |date('Y-m-d H-i-s') }}</p>
+                        <p>{{ post_emploi.postReponse.reponse }}</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+{#                        <button type="button" class="btn btn-primary">Save changes</button>#}
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        {% endif %}
+      {% endfor %}
 
 {% endblock %}

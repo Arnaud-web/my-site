@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PostReponse index{% endblock %}
+
+{% block body %}
+    <h1>PostReponse index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CreatedAt</th>
+                <th>Reponse</th>
+                <th>DateEntretien</th>
+                <th>Statu</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post_reponse in post_reponses %}
+            <tr>
+                <td>{{ post_reponse.id }}</td>
+                <td>{{ post_reponse.createdAt ? post_reponse.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ post_reponse.reponse }}</td>
+                <td>{{ post_reponse.dateEntretien ? post_reponse.dateEntretien|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ post_reponse.statu }}</td>
+                <td>
+                    <a href="{{ path('post_reponse_show', {'id': post_reponse.id}) }}">show</a>
+                    <a href="{{ path('post_reponse_edit', {'id': post_reponse.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('post_reponse_new') }}">Create new</a>
+{% endblock %}
